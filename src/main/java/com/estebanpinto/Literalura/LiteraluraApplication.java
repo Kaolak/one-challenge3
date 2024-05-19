@@ -13,6 +13,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.CommandLineRunner;
 
+import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
@@ -37,40 +38,53 @@ public class LiteraluraApplication implements CommandLineRunner {
 
 		ConsultaAPI api = new ConsultaAPI("https://gutendex.com/books/?search=");
 
-		int opcion = menu();
-		while (opcion != 6) {
-			switch (opcion) {
-				case 1:
-					System.out.println("Ingrese el titulo del libro: ");
-					Scanner scanner = new Scanner(System.in);
-					String titulo = scanner.nextLine();
-					Libro libro = api.getLibro(titulo);
-					if(libro != null) {
-						libroService.addLibro(libro);
-						System.out.println(libro);
-					}
-					else {
-						System.out.println("Libro no encontrado");
-					}
-					break;
-				case 2:
-					Genero genero = mostrarGeneros();
-					libroService.getLibrosByGenero(genero).forEach(System.out::println);
-					break;
-				case 3:
-					Idioma idioma = mostrarIdiomas();
-					libroService.getLibrosByIdioma(idioma).forEach(System.out::println);
-					break;
-				case 4:
-					Autor autor = mostrarAutores();
-					libroService.getLibrosByAutor(autor).forEach(System.out::println);
-					break;
-				case 5:
-					libroService.getLibros().forEach(System.out::println);
-					break;
-			}
+		int opcion = 0;
+		try {
 			opcion = menu();
+		}catch (InputMismatchException e) {
+			System.out.println("Opcion invalida");
 		}
+
+			while (opcion != 6) {
+				try {
+					switch (opcion) {
+
+						case 1:
+							System.out.println("Ingrese el titulo del libro: ");
+							Scanner scanner = new Scanner(System.in);
+							String titulo = scanner.nextLine();
+							Libro libro = api.getLibro(titulo);
+							if (libro != null) {
+								libroService.addLibro(libro);
+								System.out.println(libro);
+							} else {
+								System.out.println("Libro no encontrado");
+							}
+							break;
+						case 2:
+							Genero genero = mostrarGeneros();
+							libroService.getLibrosByGenero(genero).forEach(System.out::println);
+							break;
+						case 3:
+							Idioma idioma = mostrarIdiomas();
+							libroService.getLibrosByIdioma(idioma).forEach(System.out::println);
+							break;
+						case 4:
+							Autor autor = mostrarAutores();
+							libroService.getLibrosByAutor(autor).forEach(System.out::println);
+							break;
+						case 5:
+							libroService.getLibros().forEach(System.out::println);
+							break;
+					}
+				}catch (InputMismatchException e) {
+					System.out.println("Opcion invalida");
+				}
+				opcion = menu();
+			}
+
+
+
 	}
 
 	private Autor mostrarAutores() {
