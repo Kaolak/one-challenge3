@@ -4,6 +4,7 @@ import com.estebanpinto.Literalura.dto.LibroDTO;
 import com.estebanpinto.Literalura.repositorys.AutorRepository;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -13,17 +14,17 @@ public class Libro {
     @Id
     private Long id;
     private String titulo;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "libro_autor",
             joinColumns = @JoinColumn(name = "libro_id"),
             inverseJoinColumns = @JoinColumn(name = "autor_id"))
     private List<Autor> autores;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "libro_genero",
             joinColumns = @JoinColumn(name = "libro_id"),
             inverseJoinColumns = @JoinColumn(name = "genero_id"))
     private List<Genero> generos;
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "libro_idioma",
             joinColumns = @JoinColumn(name = "libro_id"),
             inverseJoinColumns = @JoinColumn(name = "idioma_id"))
@@ -76,15 +77,13 @@ public class Libro {
         return idiomas;
     }
 
+
     @Override
     public String toString() {
-        return "Libro{" +
-                "id=" + id +
-                ", titulo='" + titulo + '\'' +
-                ", autores=" + autores +
-                ", generos=" + generos +
-                ", idiomas=" + idiomas +
-                ", descargas=" + descargas +
-                '}';
+        return ">>" +titulo + '\n' +
+                "Autores: " + autores +
+                "\nGeneros: " + generos +
+                "\nIdiomas: " + idiomas +
+                "\nDescargas:" + descargas;
     }
 }

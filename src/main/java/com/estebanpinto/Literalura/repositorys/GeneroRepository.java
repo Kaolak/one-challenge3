@@ -11,4 +11,5 @@ public interface GeneroRepository extends Repository<Genero, Long> {
     Optional<Genero> findByNombre(String nombre);
     Optional<Genero> findById(Long id);
     List<Genero> findAll();
+
 }

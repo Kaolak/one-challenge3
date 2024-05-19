@@ -51,4 +51,7 @@ public class Autor {
         return nombre + " (" + fechaNacimiento + " - " + fechaDefuncion + ")";
     }
 
+    public Long getId() {
+        return id;
+    }
 }

@@ -11,6 +11,7 @@ import com.estebanpinto.Literalura.repositorys.LibroRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -37,6 +38,38 @@ public class LibroService {
         libro.setIdiomas(saveIdiomas(libro.getIdiomas()));
         libroRepository.save(libro);
     }
+
+    public List<Libro> getLibros() {
+        return libroRepository.findAll();
+    }
+    public List<Libro> getLibrosByGenero(Genero genero) {
+        Optional<Genero> generoOptional = generoRepository.findByNombre(genero.getNombre());
+        if (generoOptional.isEmpty()) {
+            return new ArrayList<Libro>();
+        }
+        return libroRepository.findByGenero(generoOptional.get().getId());
+    }
+
+    public List<Libro> getLibrosByAutor(Autor autor) {
+        Optional<Autor> autorOptional = autorRepository.findByNombre(autor.getNombre());
+        if (autorOptional.isEmpty()) {
+            return new ArrayList<Libro>();
+        }
+        return libroRepository.findByAutor(autorOptional.get().getId());
+    }
+    public List<Libro> getLibrosByIdioma(Idioma idioma) {
+        Optional<Idioma> idiomaOptional = idiomaRepository.findByNombre(idioma.getNombre());
+        if (idiomaOptional.isEmpty()) {
+            return new ArrayList<Libro>();
+        }
+        return libroRepository.findByIdioma(idiomaOptional.get().getId());
+    }
+    public List<Libro> getTopLibros(long top) {
+        return libroRepository.getTopByDescargas(top);
+    }
+
+
+
     private List<Genero> saveGeneros(List<Genero> generos) {
         List<Genero> generoList = new ArrayList<Genero>();
         generos.forEach(genero -> {

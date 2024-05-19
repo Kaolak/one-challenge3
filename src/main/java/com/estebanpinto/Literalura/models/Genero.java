@@ -40,4 +40,8 @@ public class Genero {
     public String toString() {
         return nombre;
     }
+
+    public Long getId() {
+        return id;
+    }
 }
